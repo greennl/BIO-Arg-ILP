@@ -1,0 +1,343 @@
+set(posonly)?
+set(verbose, 2)?
+set(h, 10000)?
+set(r, 10000)?
+set(nodes, 10000)?
+
+%%%% Mode declarations. %%%%
+:- modeh(1, argument4(agreement, +id_t, +id_t, conclusion(cause(+geno_t, +pheno_t, +group_t))))?
+:- modeh(1, argument5(failed_method_of_agreement, +id_t, +id_t, +id_t, conclusion(knot(cause(+geno_t, +pheno_t, +group_t)))))?
+:- modeh(1, argument6(eliminate_difference, +id_t, +id_t, +id_t, +id_t, conclusion(cause(+geno_t, +pheno_t, +group_t))))?
+:- modeh(1, argument7(difference, +id_t, +id_t, +id_t, +id_t, +id_t, conclusion(cause(+geno_t, +pheno_t, +group_t))))?
+:- modeh(1, argument10(analogy, +id_t,+id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, conclusion(cause(+geno_t, +pheno_t, +group_t))))?
+:- modeh(1, argument11(analogy, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, conclusion(cause(+geno_t, +pheno_t, +group_t))))?
+:- modeh(1, argument11(difference_consistent_explanation, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, conclusion(cause(+geno_t, +pheno_t, +group_t))))?
+:- modeh(1, argument16(consistent_explanation, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, +id_t, conclusion(cause(+geno_t, +pheno_t, +group_t))))?
+:- modeb(*, has_geno(+id_t, +group_t, -geno_t))?
+:- modeb(*, has_geno(+id_t, -group_t, +geno_t))?
+:- modeb(*, has_pheno(+id_t, +group_t, -pheno_t))?
+:- modeb(*, has_pheno(+id_t, -group_t, +pheno_t))?
+:- modeb(*, has_prot(+id_t, +group_t, -prot_t))?
+:- modeb(*, has_prot(+id_t, -group_t, +prot_t))?
+:- modeb(*, knot(+id_t, has_geno(-id_t, +group_t, -geno_t)))?
+:- modeb(*, knot(+id_t, has_geno(-id_t, -group_t, +geno_t)))?
+:- modeb(*, knot(+id_t, has_pheno(-id_t, +group_t, -pheno_t)))?
+:- modeb(*, knot(+id_t, has_pheno(-id_t, -group_t, +pheno_t)))?
+:- modeb(*, knot(+id_t, has_prot(-id_t, +group_t, -prot_t)))?
+:- modeb(*, knot(+id_t, has_prot(-id_t, -group_t, +prot_t)))?
+:- modeb(*, knot(+id_t, cause(-id_t, +geno_t, -pheno_t, +group_t)))?
+:- modeb(*, knot(+id_t, cause(-id_t, -geno_t, +pheno_t, +group_t)))?
+:- modeb(*, similar(+id_t, +geno_t, -geno_t))?
+:- modeb(*, similar(+id_t, -geno_t, +geno_t))?
+:- modeb(*, similar(+id_t, +pheno_t, -pheno_t))?
+:- modeb(*, similar(+id_t, -pheno_t, +pheno_t))?
+:- modeb(*, isa(+id_t, +geno_t, -geno_t))?
+:- modeb(*, isa(+id_t, -geno_t, +geno_t))?
+:- modeb(*, cognate(+id_t, +geno_t, -geno_t))?
+:- modeb(*, cognate(+id_t, -geno_t, +geno_t))?
+:- modeb(*, cognate(+id_t, +pheno_t, -pheno_t))?
+:- modeb(*, cognate(+id_t, -pheno_t, +pheno_t))?
+:- modeb(*, subset(+id_t, +group_t, -group_t))?
+:- modeb(*, subset(+id_t, -group_t, +group_t))?
+:- modeb(*, difference(+id_t, +geno_t, +geno_t, +geno_t))?
+:- modeb(*, difference(+id_t, +geno_t, +geno_t, -geno_t))?
+:- modeb(*, difference(+id_t, +geno_t, -geno_t, +geno_t))?
+:- modeb(*, difference(+id_t, +geno_t, -geno_t, -geno_t))?
+:- modeb(*, difference(+id_t, -geno_t, +geno_t, +geno_t))?
+:- modeb(*, difference(+id_t, -geno_t, +geno_t, -geno_t))?
+:- modeb(*, difference(+id_t, -geno_t, -geno_t, +geno_t))?
+:- modeb(*, difference(+id_t, -geno_t, -geno_t, -geno_t))?
+:- modeb(*, complement(+id_t, +group_t, -group_t))?
+:- modeb(*, complement(+id_t, -group_t, +group_t))?
+:- modeb(*, focus(+id_t, mouse, human))?
+:- modeb(*, enable(+id_t, analogy))?
+
+% cause(geno, pheno, group)
+:- modeb(*, cause(+id_t, +geno_t, +pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, +geno_t, +pheno_t, -group_t))?
+:- modeb(*, cause(+id_t, +geno_t, -pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, +geno_t, -pheno_t, -group_t))?
+:- modeb(*, cause(+id_t, -geno_t, +pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, -geno_t, +pheno_t, -group_t))?
+:- modeb(*, cause(+id_t, -geno_t, -pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, -geno_t, -pheno_t, -group_t))?
+
+% cause(geno, prot, group)
+:- modeb(*, cause(+id_t, +geno_t, +prot_t, +group_t))?
+:- modeb(*, cause(+id_t, +geno_t, +prot_t, -group_t))?
+:- modeb(*, cause(+id_t, +geno_t, -prot_t, +group_t))?
+:- modeb(*, cause(+id_t, +geno_t, -prot_t, -group_t))?
+:- modeb(*, cause(+id_t, -geno_t, +prot_t, +group_t))?
+:- modeb(*, cause(+id_t, -geno_t, +prot_t, -group_t))?
+:- modeb(*, cause(+id_t, -geno_t, -prot_t, +group_t))?
+:- modeb(*, cause(+id_t, -geno_t, -prot_t, -group_t))?
+
+% cause(prot, prot, group)
+:- modeb(*, cause(+id_t, +prot_t, +prot_t, +group_t))?
+:- modeb(*, cause(+id_t, +prot_t, +prot_t, -group_t))?
+:- modeb(*, cause(+id_t, +prot_t, -prot_t, +group_t))?
+:- modeb(*, cause(+id_t, +prot_t, -prot_t, -group_t))?
+:- modeb(*, cause(+id_t, -prot_t, +prot_t, +group_t))?
+:- modeb(*, cause(+id_t, -prot_t, +prot_t, -group_t))?
+:- modeb(*, cause(+id_t, -prot_t, -prot_t, +group_t))?
+:- modeb(*, cause(+id_t, -prot_t, -prot_t, -group_t))?
+
+% cause(prot, pheno, group)
+:- modeb(*, cause(+id_t, +prot_t, +pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, +prot_t, +pheno_t, -group_t))?
+:- modeb(*, cause(+id_t, +prot_t, -pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, +prot_t, -pheno_t, -group_t))?
+:- modeb(*, cause(+id_t, -prot_t, +pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, -prot_t, +pheno_t, -group_t))?
+:- modeb(*, cause(+id_t, -prot_t, -pheno_t, +group_t))?
+:- modeb(*, cause(+id_t, -prot_t, -pheno_t, -group_t))?
+
+%%%% Types. %%%%
+type_t(agreement).
+type_t(analogy).
+type_t(difference).
+type_t(failed_method_of_agreement).
+type_t(consistent_explanation).
+type_t(eliminate_difference).
+type_t(difference_consistent_explanation).
+
+%%%% IDs. %%%%
+id_t(id1).
+id_t(id2).
+id_t(id3).
+id_t(id4).
+id_t(id5).
+id_t(id6).
+id_t(id7).
+id_t(id8).
+id_t(id9).
+id_t(id10).
+id_t(id11).
+id_t(id12).
+id_t(id13).
+id_t(id14).
+id_t(id15).
+id_t(id16).
+id_t(id17).
+id_t(id18).
+id_t(id19).
+id_t(id20).
+id_t(id21).
+id_t(id22).
+id_t(id23).
+id_t(id24).
+id_t(id25).
+id_t(id26).
+id_t(id27).
+id_t(id28).
+id_t(id29).
+id_t(id30).
+id_t(id31).
+id_t(id32).
+id_t(id33).
+id_t(id34).
+id_t(id35).
+id_t(id36).
+id_t(id37).
+id_t(id38).
+id_t(id39).
+id_t(id40).
+id_t(id41).
+id_t(id42).
+id_t(id43).
+id_t(id44).
+id_t(id45).
+id_t(id46).
+id_t(id47).
+id_t(id48).
+id_t(id49).
+id_t(id50).
+id_t(id51).
+id_t(id52).
+id_t(id53).
+id_t(id54).
+id_t(id55).
+id_t(id56).
+id_t(id57).
+id_t(id58).
+id_t(id59).
+id_t(id60).
+id_t(id61).
+id_t(id62).
+id_t(id63).
+id_t(id64).
+id_t(id65).
+id_t(id66).
+id_t(id67).
+id_t(id68).
+id_t(id69).
+id_t(id70).
+id_t(id71).
+id_t(id72).
+id_t(id73).
+id_t(id74).
+id_t(id75).
+id_t(id76).
+id_t(id77).
+id_t(id78).
+id_t(id79).
+id_t(id80).
+id_t(id100).
+id_t(id101).
+
+%%%% Groups. %%%%
+group_t(group1).
+group_t(group2).
+group_t(group3).
+group_t(group3s).
+group_t(group4).
+group_t(group5).
+group_t(group6).
+group_t(group7).
+group_t(group8).
+group_t(group9).
+group_t(group10).
+group_t(group11).
+group_t(group12).
+
+%%%% Genotypes. %%%%
+geno_t(geno1).
+geno_t(geno2).
+geno_t(geno2a).
+geno_t(geno3).
+geno_t(geno3s).
+geno_t(geno4).
+geno_t(geno5).
+geno_t(geno6).
+geno_t(geno7).
+geno_t(geno8).
+geno_t(geno9).
+geno_t(geno10).
+
+%%%% Phenotypes. %%%%
+pheno_t(pheno1).
+pheno_t(pheno2).
+pheno_t(pheno3).
+pheno_t(pheno4).
+pheno_t(pheno5).
+pheno_t(pheno6).
+pheno_t(pheno7).
+pheno_t(pheno8).
+pheno_t(pheno9).
+pheno_t(pheno10).
+
+%%%% Proteins. %%%%
+prot_t(prot1).
+prot_t(prot2).
+prot_t(prot3).
+prot_t(prot4).
+prot_t(prot5).
+prot_t(prot6).
+prot_t(prot7).
+prot_t(prot8).
+prot_t(prot9).
+prot_t(prot10).
+
+
+%%%%% BK. %%%%%
+
+%%%% Has geno predicates. %%%%
+has_geno(id2, group1, geno1).
+has_geno(id3, group2, geno2).
+has_geno(id10, group1, geno3).
+has_geno(id17, group3s, geno2a).
+has_geno(id27, group5, geno5).
+has_geno(id33, group7, geno5).
+has_geno(id38, group9, geno5).
+has_geno(id45, group11, geno6).
+
+%%%% Has pheno predicates. %%%%
+has_pheno(id1, group1, pheno1).
+has_pheno(id4, group2, pheno2).
+has_pheno(id19, group3s, pheno2).
+has_pheno(id23, group4, pheno3).
+has_pheno(id26, group5, pheno3).
+has_pheno(id32, group7, pheno3).
+has_pheno(id39, group9, pheno3).
+
+%%%% Has prot predicates. %%%%
+has_prot(id11, group2, prot1).
+has_prot(id12, group1, prot1).
+has_prot(id18, group3s, prot1).
+has_prot(id58, group4, prot1).
+has_prot(id60, group5, prot1).
+
+%%%% Knot predicates. %%%%
+knot(id28, has_pheno(id29, group6, pheno3)).
+knot(id34, has_pheno(id35, group8, pheno3)).
+knot(id42, has_pheno(id43, group10, pheno3)).
+knot(id46, has_pheno(id47, group11, pheno3)).
+knot(id63, has_pheno(id64, group12, pheno3)).
+knot(id30, has_geno(id31, group6, geno5)).
+knot(id36, has_geno(id37, group8, geno5)).
+knot(id40, has_geno(id41, group10, geno5)).
+knot(id48, cause(id49, geno6, pheno3, group4)). % Conclusion of argument 11.
+knot(id61, has_prot(id62, group12, prot1)).
+
+%%%% PREMISE cause predicates. %%%%
+cause(id5, geno2, pheno2, group2).
+cause(id6, geno1, pheno1, group1). % Conclusion of argument 1.
+cause(id13, geno3, prot1, group1).
+cause(id14, geno2, prot1, group2).
+cause(id21, geno4, pheno3, group4). % Conclusion of argument 5.
+cause(id24, geno2a, pheno2, group3s). % Conclusion of argument 4s.
+cause(id44, geno5, pheno3, group9). % Conclusion of argument 10.
+cause(id50, geno2a, prot1, group3s).
+cause(id51, prot1, prot2, group3s).
+cause(id52, geno7, prot1, group4).
+cause(id53, prot1, prot2, group4).
+cause(id54, prot2, pheno3, group4).
+cause(id55, geno7, pheno3, group4). % Conclusion of argument 12.
+
+%%%% Is-A predicates. %%%%
+isa(id8, geno2a, geno1).
+isa(id9, geno2, geno2a).
+isa(id15, geno3, geno2a).
+isa(id59, geno7, geno4).
+
+%%%% Cognate predicates. %%%%
+cognate(id22, geno2a, geno4).
+
+%%%% Similar predicates. %%%%
+similar(id7, pheno2, pheno1).
+similar(id16, pheno1, pheno2).
+similar(id20, pheno2, pheno3).
+
+%%%% Difference predicates. %%%%
+difference(id56, geno5, geno6, geno7).
+
+%%%% Subset predicates. %%%%
+subset(id57, group9, group4).
+subset(id65, group5, group4).
+
+%%%% Complement predicates. %%%%
+complement(id66, group5, group12).
+complement(id67, group5, group6).
+complement(id68, group7, group8).
+complement(id69, group9, group10).
+
+%%%% Focus predicates. %%%%
+focus(id100, mouse, human).
+
+%%%% Enable predicates.
+enable(id101, analogy).
+
+%%%% Example arguments. %%%%
+argument4(agreement, id1, id2, conclusion(cause(geno1, pheno1, group1))). % ARG 1.
+argument4(agreement, id1, id10, conclusion(cause(geno3, pheno1, group1))). % ARG 3.
+argument4(agreement, id26, id27, conclusion(cause(geno5, pheno3, group5))). % ARG 6.
+argument5(failed_method_of_agreement, id45, id46, id23, conclusion(knot(cause(geno6, pheno3, group4)))). % ARG 11.
+argument6(eliminate_difference, id48, id44, id56, id57, conclusion(cause(geno7, pheno3, group4))). % ARG 12.
+argument7(difference, id26, id27, id28, id30, id67, conclusion(cause(geno5, pheno3, group5))). % ARG 7.
+argument7(difference, id26, id27, id28, id30, id67, conclusion(cause(geno5, pheno3, group5))). % ARG 8 (no difference).
+argument7(difference, id32, id33, id34, id36, id68, conclusion(cause(geno5, pheno3, group7))). % ARG 9.
+argument7(difference, id39, id38, id42, id40, id69, conclusion(cause(geno5, pheno3, group9))). % ARG 10.
+argument10(analogy, id19, id17, id20, id24, id22, id23, id100, id101, conclusion(cause(geno4, pheno3, group4))). % ARG 5.
+argument11(analogy, id2, id1, id6, id4, id7, id5, id8, id9, id101, conclusion(cause(geno2a, pheno1, group1))). % ARG 2.
+argument11(difference_consistent_explanation, id60, id61, id53, id26, id63, id52, id54, id65, id66, conclusion(cause(geno7, pheno3, group4))). % ARG 14.
+argument16(consistent_explanation, id24, id18, id17, id19, id58, id23, id50, id52, id51, id53, id20, id22, id59, id100, conclusion(cause(geno7, pheno3, group4))). % ARG 13.

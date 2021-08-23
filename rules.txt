@@ -1,0 +1,37 @@
+argument4(agreement,A,B,conclusion(cause(C,D,E))) :- has_geno(B,
+	E,C), has_pheno(A,E,D).
+
+argument5(failed_method_of_agreement,A,B,C,conclusion(knot(cause(D,
+	E,F)))) :- has_geno(A,G,D), has_pheno(C,F,E), knot(B,
+	has_pheno(H,G,E)).
+
+argument6(eliminate_difference,A,B,C,D,conclusion(cause(E,F,G))) 
+	:- knot(A,cause(H,I,F,G)), cause(B,J,F,K), subset(D,K,
+	G), difference(C,J,I,E).
+
+argument7(difference,A,B,C,D,E,conclusion(cause(F,G,H))) :- has_geno(B,
+	H,F), has_pheno(A,H,G), knot(C,has_pheno(I,J,G)), knot(D,
+	has_geno(K,J,F)), complement(E,H,J).
+
+argument10(analogy,A,B,C,D,E,F,G,H,conclusion(cause(I,J,K))) 
+	:- has_pheno(F,K,J), cause(D,L,M,N), similar(C,M,J), 
+	cognate(E,L,I), focus(G,mouse,human), enable(H,analogy),
+	has_geno(B,N,L), has_pheno(A,N,M).
+
+argument11(analogy,A,B,C,D,E,F,G,H,I,conclusion(cause(J,K,L))) 
+	:- has_geno(A,L,M), has_pheno(B,L,K), cause(C,M,K,L),
+	cause(F,N,O,P), similar(E,O,K), isa(G,J,M), isa(H,N,
+	J), enable(I,analogy), has_pheno(D,P,O).
+
+argument11(difference_consistent_explanation,A,B,C,D,E,F,G,H,
+	I,conclusion(cause(J,K,L))) :- has_pheno(D,M,K), knot(E,
+	has_pheno(N,O,K)), cause(C,P,Q,L), cause(F,J,P,L), cause(G,
+	Q,K,L), subset(H,M,L), has_prot(A,M,P), knot(B,has_prot(R,
+	O,P)), complement(I,M,O).
+
+argument16(consistent_explanation,A,B,C,D,E,F,G,H,I,J,K,L,M,N,
+	conclusion(cause(O,P,Q))) :- has_pheno(F,Q,P), has_prot(E,
+	Q,R), cause(A,S,T,U), cause(G,S,R,U), cause(H,O,R,Q),
+	cause(I,R,V,U), cause(J,R,V,Q), similar(K,T,P), isa(M,
+	O,W), focus(N,mouse,human), has_geno(C,U,S), has_pheno(D,
+	U,T), has_prot(B,U,R), cognate(L,S,W).
